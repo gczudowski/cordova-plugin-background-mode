@@ -264,8 +264,13 @@ public class BackgroundMode extends CordovaPlugin {
         if (!isBind) return;
 
         fireEvent(Event.DEACTIVATE, null);
-        context.unbindService(connection);
-        context.stopService(intent);
+
+        try {
+            context.unbindService(connection);
+            context.stopService(intent);
+        } catch (Exception e) {
+            fireEvent(Event.FAILURE, String.format("'%s'", e.getMessage()));
+        }
 
         isBind = false;
     }
